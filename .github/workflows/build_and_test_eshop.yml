@@ -68,7 +68,7 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ github.run_id }}
 
   Test:
-    needs: Install
+    needs: Build
     runs-on: ubuntu-latest
 
     steps:
