@@ -111,6 +111,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install ansible boto boto3
+
       - name: Setup Ansible
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
