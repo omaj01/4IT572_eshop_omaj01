@@ -112,11 +112,19 @@ jobs:
         run: |
           pip install ansible boto boto3
 
-      - name: Setup Ansible
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Run Ansible Playbook
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
           playbook: 'ansible/ansible.yml'
-          options: |
-            --extra-vars "access_key=${{ secrets.AWS_ACCESS_KEY }}"
-            --extra-vars "secret_key=${{ secrets.AWS_SECRET_KEY }}"
-            --extra-vars "session_token=${{ secrets.AWS_SESSION_TOKEN }}"
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+          ANSIBLE_PRIVATE_KEY_FILE: ~/.ssh/id_rsa
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
