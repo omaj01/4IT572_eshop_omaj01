@@ -32,11 +32,12 @@
         groupname: launched
       loop: "{{ ec2_instance_result.instances }}"
 
-    - name: Setup SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+    - name: Wait for SSH connection
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        delay: 30
+        timeout: 300
+      loop: "{{ ec2_instance_result.instances }}"
 
 - name: Configure EC2 Instances
   hosts: launched
