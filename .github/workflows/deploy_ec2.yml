@@ -112,17 +112,6 @@ jobs:
         run: |
           pip install ansible boto boto3
 
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Setup SSH for EC2
-        uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
-        with:
-          EC2_SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-
       - name: Setup Ansible
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
