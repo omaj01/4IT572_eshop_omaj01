@@ -117,6 +117,8 @@ jobs:
           SSH: ${{ secrets.SSH_KEY }}
         run: |
           mkdir .ssh
+          cd .ssh
+          touch id_rsa
           echo "$SSH" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
