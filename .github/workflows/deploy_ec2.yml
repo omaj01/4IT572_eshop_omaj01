@@ -113,8 +113,11 @@ jobs:
           pip install ansible boto boto3
 
       - name: Setup SSH key for Ansible
+        env:
+          SSH: ${{ secrets.SSH_KEY }}
         run: |
-          echo "${{ secrets.SSH_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+          mkdir .ssh
+          echo "$SSH" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
       - name: Setup Ansible
