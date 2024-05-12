@@ -112,11 +112,14 @@ jobs:
         run: |
           pip install ansible boto boto3
 
-      - name: Run Ansible Playbook
+      - name: Setup SSH Key
         run: |
           mkdir -p /home/runner/.ssh
           echo -e "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/test.pem
           chmod 600 /home/runner/.ssh/test.pem
+
+      - name: Run Ansible Playbook
+        run: |
           ansible-playbook -i inventory ansible/ansible.yml --private-key /home/runner/.ssh/test.pem
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
