@@ -45,6 +45,7 @@
   become: yes
   vars:
     ansible_ssh_private_key_file: /home/runner/.ssh/test.pem
+    ansible_user: ec2-user
   tasks:
     - name: Install Git and Docker
       yum:
