@@ -122,7 +122,7 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
           playbook: 'ansible/ansible.yml'
-          key: ${{ secrets.SSH_KEY }}
+          key: ~/.ssh/test.pem
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
           ANSIBLE_PRIVATE_KEY_FILE: ~/.ssh/test.pem
