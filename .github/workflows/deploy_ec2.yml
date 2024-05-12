@@ -1,8 +1,9 @@
-name: Build and tests eshop
-
+name: Build and tests eshop (if main deploy)
 on:
   workflow_dispatch:
-  push:
+  pull_request:
+      branches:
+        - main
 
 jobs:
   Install:
@@ -91,3 +92,38 @@ jobs:
       - name: Run tests
         run: |
           npm run test -- --colors
+
+  Deploy:
+    needs: Test
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          pip install ansible boto boto3
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p /home/runner/.ssh
+          echo -e "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/test.pem
+          chmod 600 /home/runner/.ssh/test.pem
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i inventory ansible/ansible.yml --private-key /home/runner/.ssh/test.pem -vvvvv
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
