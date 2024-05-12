@@ -17,7 +17,7 @@
         tags:
           Name: Eshop
         count: 1
-        security_group: eshop
+        #security_group: eshop
         network:
           assign_public_ip: yes
         wait: yes
