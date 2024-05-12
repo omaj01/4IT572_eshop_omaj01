@@ -1,4 +1,4 @@
-name: Build and tests eshop
+name: Build and tests eshop (if main deploy)
 on:
   workflow_dispatch:
   pull_request:
@@ -95,6 +95,7 @@ jobs:
 
   Deploy:
     needs: Test
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
 
     steps:
