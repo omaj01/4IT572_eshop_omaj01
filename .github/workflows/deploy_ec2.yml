@@ -117,7 +117,7 @@ jobs:
           mkdir -p /home/runner/.ssh
           echo -e "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/test.pem
           chmod 600 /home/runner/.ssh/test.pem
-          ssh -i "/home/runner/.ssh/test.pem" ec2-user@ec2-54-158-238-24.compute-1.amazonaws.com
+          ssh -i "/home/runner/.ssh/test.pem" -o StrictHostKeyChecking=no ec2-user@ec2-54-158-238-24.compute-1.amazonaws.com
           mkdir -p testSpojeni
 
       - name: Setup Ansible
