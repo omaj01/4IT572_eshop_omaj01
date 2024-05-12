@@ -98,6 +98,7 @@
   tasks:
     - name: Retrieve All Instances
       ec2_instance_info:
+        region: us-east-1
         filters:
           "tag:Name": "Eshop"
       register: all_instances
