@@ -117,6 +117,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/test.pem
           chmod 600 /home/runner/.ssh/test.pem
+          ssh-agent bash
+          ssh-add /home/runner/.ssh/test.pem
 
       - name: Setup Ansible
         uses: dawidd6/action-ansible-playbook@v2.8.0
