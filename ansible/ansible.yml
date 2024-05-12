@@ -101,6 +101,7 @@
         region: us-east-1
         filters:
           "tag:Name": "Eshop"
+          "instance-state-name": "running"
       register: all_instances
 
     - name: Determine Older Instances
