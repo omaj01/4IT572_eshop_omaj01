@@ -111,6 +111,7 @@
     - name: Terminate Older Instances
       ec2_instance:
         state: absent
+        region: us-east-1
         instance_ids: "{{ item.instance_id }}"
       loop: "{{ all_instances.instances }}"
       when: item.tags.DeployedAt != latest_time
