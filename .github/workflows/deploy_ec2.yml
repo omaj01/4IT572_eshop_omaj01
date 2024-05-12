@@ -120,20 +120,9 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook -i inventory ansible/ansible.yml --private-key /home/runner/.ssh/test.pem
+          ansible-playbook -i inventory ansible/ansible.yml --private-key /home/runner/.ssh/test.pem -vvvvv
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-      #- name: Setup Ansible
-       # uses: dawidd6/action-ansible-playbook@v2.8.0
-        #with:
-         # playbook: 'ansible/ansible.yml'
-          #key: '/home/runner/.ssh/test.pem'
-        #env:
-          #ANSIBLE_HOST_KEY_CHECKING: "False"
-          #ANSIBLE_PRIVATE_KEY_FILE: '/home/runner/.ssh/test.pem'
-          #AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-          #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          #AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
