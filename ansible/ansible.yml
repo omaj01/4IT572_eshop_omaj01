@@ -17,7 +17,7 @@
         tags:
           Name: Eshop
         count: 1
-        #security_group: eshop
+        security_group: eshop
         network:
           assign_public_ip: yes
         wait: yes
@@ -43,7 +43,8 @@
   hosts: launched
   connection: ssh
   become: yes
-
+  vars:
+    ansible_ssh_private_key_file: /home/runner/.ssh/test.pem
   tasks:
     - name: Install Git and Docker
       yum:
