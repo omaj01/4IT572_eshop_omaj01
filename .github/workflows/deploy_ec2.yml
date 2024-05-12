@@ -114,18 +114,17 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/test.pem
-          chmod 600 /home/runner/.ssh/test.pem
+          echo "${{ secrets.SSH_KEY }}" > /home/runner/test.pem
+          chmod 600 /home/runner/test.pem
 
       - name: Setup Ansible
         uses: dawidd6/action-ansible-playbook@v2.8.0
         with:
           playbook: 'ansible/ansible.yml'
-          key: /home/runner/.ssh/test.pem
+          key: /home/runner/test.pem
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
-          ANSIBLE_PRIVATE_KEY_FILE: /home/runner/.ssh/test.pem
+          ANSIBLE_PRIVATE_KEY_FILE: /home/runner/test.pem
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
