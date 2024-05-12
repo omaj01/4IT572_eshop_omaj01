@@ -1,7 +1,7 @@
 name: Build and tests eshop (if main deploy)
 on:
   workflow_dispatch:
-  pull_request:
+  push:
 
 jobs:
   Install:
