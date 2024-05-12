@@ -16,6 +16,7 @@
         vpc_subnet_id: subnet-09673e61364597e15
         tags:
           Name: Eshop
+          DeployedAt: "{{ lookup('pipe','date +%Y-%m-%d_%H-%M-%S') }}"
         count: 1
         security_group: eshop
         network:
@@ -85,3 +86,29 @@
       wait_for:
         port:
           80
+
+- name: Clean Old EC2 Instances
+  hosts: localhost
+  connection: local
+  vars:
+    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') }}"
+    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') }}"
+    aws_session_token: "{{ lookup('env', 'AWS_SESSION_TOKEN') }}"
+
+  tasks:
+    - name: Retrieve All Instances
+      ec2_instance_info:
+        filters:
+          "tag:Name": "Eshop"
+      register: all_instances
+
+    - name: Determine Older Instances
+      set_fact:
+        latest_time: "{{ all_instances.instances | map(attribute='tags.DeployedAt') | list | max }}"
+
+    - name: Terminate Older Instances
+      ec2_instance:
+        state: absent
+        instance_ids: "{{ item.instance_id }}"
+      loop: "{{ all_instances.instances }}"
+      when: item.tags.DeployedAt != latest_time
